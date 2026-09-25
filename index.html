@@ -5,11 +5,38 @@
 <title>3 Digit Number Selector</title>
 <style>
 *{box-sizing:border-box}body{margin:0;padding:12px;font-family:Arial,sans-serif;background:#f3f4f6;color:#111}h1{text-align:center;font-size:clamp(20px,4vw,30px)}.bar{display:flex;gap:8px;max-width:1100px;margin:auto auto 14px}.bar input{min-width:0;flex:1;padding:12px;font-size:16px}.bar button{padding:10px 12px}.wrap{width:100%;overflow-x:auto;background:#fff}.fixed{border-collapse:collapse;width:100%;table-layout:fixed}.fixed th,.fixed td{border:1px solid #aaa;text-align:center;padding:7px 2px;font-weight:bold;font-size:clamp(10px,1.8vw,15px);white-space:nowrap}.fixed th,.fixed td:first-child{background:#e5e7eb}.y{background:#fff176!important}.g{background:#69f0ae!important}.r{background:#ff8a80!important}.results{max-width:1100px;margin:18px auto}.card{background:white;border-radius:10px;padding:12px;margin:12px 0;overflow:auto}.count{font-weight:bold;font-size:18px;margin:10px 0}.auto{border-collapse:collapse;width:100%}.auto td{border:1px solid #ccc;text-align:center;padding:7px;font-weight:bold}.actions{display:flex;gap:8px;flex-wrap:wrap}@media(max-width:600px){body{padding:6px}.bar{gap:5px}.bar button{font-size:12px;padding:9px 7px}.fixed th,.fixed td{padding:5px 1px;font-size:10px}}
-</style>
+.guide{max-width:1100px;margin:0 auto 18px;background:#fff;border:1px solid #d1d5db;border-radius:10px;padding:14px}.guide h2{margin:0 0 8px;font-size:20px}.guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.guide-grid>div{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:10px;line-height:1.55}.guide code{background:#eef2ff;padding:2px 5px;border-radius:4px;font-weight:bold}.guide-note{margin:10px 0 0;background:#fff7ed;padding:9px;border-radius:7px;line-height:1.5}@media(max-width:600px){.guide{padding:10px}.guide-grid{grid-template-columns:1fr}.guide-grid>div{font-size:14px}}</style>
 </head>
 <body>
 <h1>🔢 000 – 999 Number Selector</h1>
 <div class="bar"><input id="q" placeholder="H1 | T2 | U3 | H,T,4=T,U,6"><button id="searchBtn">🔍 Search</button><button id="clearBtn">Clear</button></div>
+<section class="guide">
+<h2>📘 Search Logic Guide</h2>
+<p>Search box ထဲမှာ logic တစ်ခုထည့်ပြီး <b>🔍 Search</b> ကိုနှိပ်ပါ။ စာလုံးအကြီး/အသေး မခွဲပါ။</p>
+<div class="guide-grid">
+<div><b>1. Digit Search</b><br>
+<code>H5</code> / <code>Hd5</code> / <code>Top5</code> → Hundreds = 5 (5xx)<br>
+<code>T8</code> / <code>Td8</code> / <code>Middle8</code> → Tens = 8 (x8x)<br>
+<code>U3</code> / <code>Ud3</code> / <code>Last3</code> → Units = 3 (xx3)</div>
+<div><b>2. BK Search</b><br>
+BK ဆိုတာ digit 3 လုံးပေါင်းပြီး နောက်ဆုံး digit ကိုယူတာပါ။<br>
+ဥပမာ <code>H1 = BK0</code> → Hundreds = 1 နှင့် digit sum BK = 0</div>
+<div><b>3. Pair Search</b><br>
+<code>H,T,6</code> → Hundreds + Tens = 6<br>
+<code>H,U,5</code> → Hundreds + Units = 5<br>
+<code>T,U,7</code> → Tens + Units = 7<br>
+အပြန်အလှန် <code>T,H</code> / <code>U,H</code> / <code>U,T</code> လည်းရပါတယ်။</div>
+<div><b>4. Pair + BK</b><br>
+<code>H,U,7=BK0</code> → H+U = 7 နှင့် BK = 0 နှစ်ခုလုံးကိုက်ရမယ်။<br>
+Pair sum 10 ကျော်ရင် နောက်ဆုံး digit ကိုသုံးပါတယ်။ ဥပမာ 8+9=17 → 7.</div>
+<div><b>5. Pair + P</b><br>
+<code>H,T,6P3</code> → H+T = 6 နှင့် number ထဲမှာ digit 3 ပါရမယ်။</div>
+<div><b>6. Pair နှစ်ခု ချိတ်ခြင်း</b><br>
+<code>H,T,4=T,U,6</code> → တစ်နံပါတ်တည်းမှာ H+T = 4 <b>AND</b> T+U = 6 နှစ်ခုလုံးမှန်ရမယ်။<br>
+<code>H,T,4=H,U,6</code> → H+T = 4 <b>AND</b> H+U = 6.</div>
+</div>
+<p class="guide-note"><b>မှတ်ရန်:</b> H = Hundreds, T = Tens, U = Units. <code>Hd / Td / Ud</code> က shorthand ဖြစ်ပါတယ်။ Condition များစွာရေးထားရင် <b>တစ်နံပါတ်တည်းမှာ အားလုံးကိုက်ညီ</b> ရပါမယ်။</p>
+</section>
 <div class="wrap"><table class="fixed"><thead><tr><th>Row</th><th>Column 0</th><th>Column 1</th><th>Column 2</th><th>Column 3</th><th>Column 4</th><th>Column 5</th><th>Column 6</th><th>Column 7</th><th>Column 8</th><th>Column 9</th></tr></thead><tbody id="body"></tbody></table></div>
 <div id="results" class="results"></div>
 <script>
